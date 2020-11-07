@@ -25,56 +25,56 @@
     <!-- Timeblocks go here -->
     <div id='9am' class="row">
       <div class="col-sm-1">9AM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="9amtext"></textarea>
+      <button onclick="saveToLocalStorage('9am', document.getElementById('9amtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='10am' class="row">
       <div class="col-sm-1">10AM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="10amtext"></textarea>
+      <button onclick="saveToLocalStorage('10am', document.getElementById('10amtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='11am' class="row">
       <div class="col-sm-1">11AM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="11amtext"></textarea>
+      <button  onclick="saveToLocalStorage('11am', document.getElementById('11amtext').value)"id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
-    
+
     <div id='12pm' class="row">
       <div class="col-sm-1">12PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="12pmtext"></textarea>
+      <button onclick="saveToLocalStorage('12pm', document.getElementById('12pmtext').value)"id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='1pm' class="row">
       <div class="col-sm-1">1PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="1pmtext"></textarea>
+      <button onclick="saveToLocalStorage('1pm', document.getElementById('1pmtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='2pm' class="row">
       <div class="col-sm-1">2PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="2pmtext"></textarea>
+      <button onclick="saveToLocalStorage('2pm', document.getElementById('2pmtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='3pm' class="row">
       <div class="col-sm-1">3PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="3pmtext"></textarea>
+      <button onclick="saveToLocalStorage('3pm', document.getElementById('3pmtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='4pm' class="row">
       <div class="col-sm-1">4PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10" id="4pmtext"></textarea>
+      <button onclick="saveToLocalStorage('4pm', document.getElementById('4pmtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
     <div id='5pm' class="row">
       <div class="col-sm-1">5PM</div>
-      <textarea class="col-sm-10"></textarea>
-      <button id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
+      <textarea class="col-sm-10 plan" id="5pmtext"></textarea>
+      <button onclick="saveToLocalStorage('5pm', document.getElementById('5pmtext').value)" id="save" class="col-md-1 saveBtn btn"><i class="far fa-save"></i></button>
     </div>
 
   </div>
@@ -87,9 +87,12 @@
       var currentDate = moment().format("dddd MMMM Do YYYY");
       $("#currentDay").text(currentDate);
       //adding the colors for specfic time 
+      updateTexts();
+  });
+
+
       function timeZone() {
         var eventTime = moment().hour();
-        console.log(eventTime);
         var currentTime = $('.row');
 
         currentTime.each(function () {
@@ -97,7 +100,6 @@
           if (match < 9) {
             match += 12;
           }
-          console.log(eventTime, match);
           let time = $(this)[0];
           if (eventTime === match) {
             $(time).addClass('present')
@@ -107,9 +109,34 @@
             $(time).addClass('future')
           }
         })
+
+  
       }
       timeZone();
-    })
+      storage = window.localStorage;
+      function saveToLocalStorage(key, value) {
+        // key is time (e.g. 1pm)
+        localStorage.setItem(key, value);
+      }
+
+      function getItemLocalStorage(key) {
+       let item = localStorage.getItem(key);
+       if (item == null) return "";
+       return item;
+      }
+
+      let texts = ['9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm'];
+
+      function updateTexts() {
+        for (text of texts) {
+          let item = getItemLocalStorage(text);
+          if (item != null) {
+            let textAreaKey = text + "text";
+            document.getElementById(textAreaKey).value = item;
+          }
+        }
+      }
+    
 
   </script>
 </body>
